@@ -1,0 +1,6 @@
+{
+  "appId": "com.zokya.irl_bracer",
+  "appName": "irl-bracer",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}

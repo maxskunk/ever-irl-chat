@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">irl-bracer</string>
+    <string name="title_activity_main">irl-bracer</string>
+    <string name="package_name">com.zokya.irl_bracer</string>
+    <string name="custom_url_scheme">com.zokya.irl_bracer</string>
+</resources>
