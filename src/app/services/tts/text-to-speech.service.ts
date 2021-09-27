@@ -10,6 +10,6 @@ export class TextToSpeechService {
 
   public async speakInQueue(say: string) {
     console.log("PLEASE TO SAY: " + say);
-    TextToSpeech.speak({ text: "WOW Uh WOW This is amazing" });
+    TextToSpeech.speak({ text: say });
   }
 }
