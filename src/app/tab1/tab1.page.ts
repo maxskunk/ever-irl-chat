@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { BracerService } from '../services/bracer/bracer.service';
 import { TextToSpeechService } from '../services/tts/text-to-speech.service';
 
 @Component({
@@ -8,9 +9,13 @@ import { TextToSpeechService } from '../services/tts/text-to-speech.service';
 })
 export class Tab1Page {
 
-  constructor(private tts: TextToSpeechService) { }
+  constructor(
+    private tts: TextToSpeechService,
+    private bracer: BracerService) { }
 
   public testMsg() {
-    this.tts.speakInQueue("TEST");
+    this.bracer.sendMessage("PEEE");
+    this.bracer.sendMessage
+    //this.tts.speakInQueue("TEST");
   }
 }
