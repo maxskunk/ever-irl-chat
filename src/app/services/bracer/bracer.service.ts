@@ -6,6 +6,7 @@ import { Msg } from 'src/app/models/msg.model';
 
 const MSG_REQUEST: string = "msg_request";
 const MSG_PAYLOAD: string = "msg_payload";
+const MSG_CLIENT_MSG: string = "msg_client_msg";
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +26,13 @@ export class BracerService {
     socket.on(MSG_PAYLOAD, (res) => this.recievedMessages(res));
   }
 
-  sendMessage(msg: string) {
-    console.log("REQUESTING MESSAGES FROM SERVER");
-    this.socket.emit(MSG_REQUEST, msg);
+  loadHistory() {
+    console.log("REQUESTING HISTORY FROM SERVER");
+    this.socket.emit(MSG_REQUEST, null);
+  }
+  sendMsg(newMsg: string) {
+    console.log("SENDING MESSAGE TO SERVER");
+    this.socket.emit(MSG_CLIENT_MSG, newMsg);
   }
 
   //Recieved Messages

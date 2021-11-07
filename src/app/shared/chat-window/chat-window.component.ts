@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Msg } from 'src/app/models/msg.model';
+import { BracerService } from 'src/app/services/bracer/bracer.service';
 
 @Component({
   selector: 'app-chat-window',
@@ -10,8 +11,13 @@ export class ChatWindowComponent implements OnInit {
 
   @Input()
   public msgs: Msg[] = [];
-  constructor() { }
+  constructor(private bracer: BracerService) { }
 
   ngOnInit() { }
+
+
+  public sendMsg(msg) {
+    this.bracer.sendMsg(msg);
+  }
 
 }

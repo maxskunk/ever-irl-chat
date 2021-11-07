@@ -18,12 +18,15 @@ export class Tab1Page {
       this.msgData = msgs;
       console.log("NEW MESSAGES");
       const lastMsg = msgs[msgs.length - 1];
-      this.tts.speakInQueue(lastMsg.userName + " says " + lastMsg.msg);
-    })
+      if (lastMsg) {
+        this.tts.speakInQueue(lastMsg.userName + " says " + lastMsg.msg);
+      }
+    });
+    this.testMsg()
   }
 
   public testMsg() {
-    this.bracer.sendMessage("PEEE");
-    //this.tts.speakInQueue("TEST");
+    this.bracer.loadHistory();
   }
+
 }
