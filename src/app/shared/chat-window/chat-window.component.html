@@ -1,10 +1,18 @@
-<div fxFill fxLayoutAlign="end stretch" fxLayout="column">
+<div fxFill
+     fxLayoutAlign="end stretch"
+     fxLayout="column">
   <div *ngFor="let msg of msgs">
     <span [ngStyle]="{'color': msg.userColor}">{{msg?.userName}}</span>: {{msg?.msg}}
   </div>
-  <div class="input-section" fxLayoutAlign="space-between stretch" fxLayout="row">
-    <ion-input autocorrect="on"></ion-input>
-    <div class="sendBtn" fxLayoutAlign="center center" (click)="sendMsg('poop')">
+  <div class="input-section"
+       fxLayoutAlign="space-between stretch"
+       fxLayout="row">
+    <ion-input autocorrect="on"
+               [(ngModel)]="inputValue"
+               (keyup.enter)="sendMsg()"></ion-input>
+    <div class="sendBtn"
+         fxLayoutAlign="center center"
+         (click)="sendMsg()">
       <ion-icon name="send-sharp"></ion-icon>
     </div>
 

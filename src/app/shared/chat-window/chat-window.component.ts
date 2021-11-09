@@ -11,13 +11,17 @@ export class ChatWindowComponent implements OnInit {
 
   @Input()
   public msgs: Msg[] = [];
+
+  public inputValue: string = "";
   constructor(private bracer: BracerService) { }
 
   ngOnInit() { }
 
 
-  public sendMsg(msg) {
-    this.bracer.sendMsg(msg);
+  public sendMsg() {
+
+    this.bracer.sendMsg(this.inputValue);
+    this.inputValue = "";
   }
 
 }
