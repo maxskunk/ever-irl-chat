@@ -7,11 +7,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <!-- <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header> -->
-  <!-- <ion-button (click)="testMsg()"></ion-button> -->
-  <app-chat-window [msgs]="msgData"></app-chat-window>
+  <div class="preview"
+       (click)="requestPreview()">
+    <img [src]="previewData">
+  </div>
+
+  <!-- <app-chat-window [msgs]="msgData"></app-chat-window> -->
 </ion-content>

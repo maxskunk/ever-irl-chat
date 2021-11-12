@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Msg } from '../models/msg.model';
 import { BracerService } from '../services/bracer/bracer.service';
 import { TextToSpeechService } from '../services/tts/text-to-speech.service';
@@ -11,6 +12,9 @@ import { TextToSpeechService } from '../services/tts/text-to-speech.service';
 export class Tab1Page {
 
   public msgData: Msg[] = [];
+
+  public previewData: any;
+
   constructor(
     private tts: TextToSpeechService,
     private bracer: BracerService) {
@@ -23,10 +27,34 @@ export class Tab1Page {
       }
     });
     this.testMsg()
+
+
+    this.bracer.previewImage.subscribe((res) => {
+
+      this.previewData = res;
+      //this.previewData = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+    });
   }
 
   public testMsg() {
     this.bracer.loadHistory();
+  }
+
+  public requestPreview() {
+    this.bracer.requestPreview();
+  }
+
+  private createFileFromBlob(image: Blob): Observable<ArrayBuffer> {
+    return new Observable<any>((observer) => {
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+        observer.next(reader.result);
+        observer.complete();
+      }, false);
+      if (image) {
+        reader.readAsDataURL(image);
+      }
+    });
   }
 
 }
