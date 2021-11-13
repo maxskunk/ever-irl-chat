@@ -9,8 +9,14 @@
   }
 
   .stream-preview {
-    height: 100px;
+    // height: 100px;
+    // min-height: 200px;
     object-fit: contain;
     background-color: lightgray;
+  }
+  .chat-button-cont {
+    position: absolute;
+    left:5px;
+    right:5px;
   }
   

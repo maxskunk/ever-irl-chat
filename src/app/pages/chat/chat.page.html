@@ -4,11 +4,23 @@
       🐜Chat
     </ion-title>
   </ion-toolbar>
+  <img class="stream-preview"
+       [src]="previewData">
+  <div class="chat-button-cont"
+       fxLayout="row"
+       fxLayoutAlign="end end"
+       fxWidth="100%">
+    <ion-button (click)="toggleSpeek()">
+      <ion-icon name="volume-medium"
+                *ngIf="ttsOn"></ion-icon>
 
+      <ion-icon name="volume-mute"
+                *ngIf="!ttsOn"></ion-icon>
+    </ion-button>
+  </div>
 </ion-header>
 
-<img class="stream-preview"
-     [src]="previewData">
+
 <ion-content #content
              fxLayoutAlign="end stretch"
              fxLayout="column">
@@ -16,9 +28,9 @@
   <div *ngFor="let msg of msgData">
     <span [ngStyle]="{'color': msg.userColor}">{{msg?.userName}}</span>: {{msg?.msg}}
   </div>
-
 </ion-content>
 <ion-footer>
+
   <div class="input-section"
        fxLayoutAlign="space-between stretch"
        fxLayout="row">

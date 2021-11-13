@@ -70,10 +70,14 @@ export class ChatPage {
       }
     });
   }
-  public sendMsg() {
 
+  public sendMsg() {
     this.bracer.sendMsg(this.inputValue);
     this.inputValue = "";
+  }
+
+  public toggleSpeek() {
+    this.ttsOn = !this.ttsOn;
   }
 
 }
