@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { IonContent } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Msg } from 'src/app/models/msg.model';
 import { BracerService } from 'src/app/services/bracer/bracer.service';
@@ -14,6 +15,9 @@ export class ChatPage {
   public msgData: Msg[] = [];
   public inputValue: string = "";
   public previewData: any;
+  public ttsOn: boolean = true;
+
+  @ViewChild('content') private content: IonContent;
 
   constructor(
     private tts: TextToSpeechService,
@@ -27,9 +31,10 @@ export class ChatPage {
       //TODO Re-enable
       this.msgData = msgs;
       const lastMsg = msgs[msgs.length - 1];
-      if (lastMsg) {
+      if (lastMsg && this.ttsOn) {
         this.tts.speakInQueue(lastMsg.userName + " says " + lastMsg.msg);
       }
+      this.scrollToBottom();
     });
     this.testMsg()
 
@@ -47,6 +52,10 @@ export class ChatPage {
 
   public requestPreview() {
     this.bracer.requestPreview();
+  }
+
+  scrollToBottom(): void {
+    this.content.scrollToBottom(300);
   }
 
   private createFileFromBlob(image: Blob): Observable<ArrayBuffer> {

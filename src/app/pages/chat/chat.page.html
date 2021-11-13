@@ -9,7 +9,8 @@
 
 <img class="stream-preview"
      [src]="previewData">
-<ion-content fxLayoutAlign="end stretch"
+<ion-content #content
+             fxLayoutAlign="end stretch"
              fxLayout="column">
 
   <div *ngFor="let msg of msgData">
