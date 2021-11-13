@@ -1,9 +1,23 @@
-<div fxFill
-     fxLayoutAlign="end stretch"
-     fxLayout="column">
-  <div *ngFor="let msg of msgs">
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      🐜Chat
+    </ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+<img class="stream-preview"
+     [src]="previewData">
+<ion-content fxLayoutAlign="end stretch"
+             fxLayout="column">
+
+  <div *ngFor="let msg of msgData">
     <span [ngStyle]="{'color': msg.userColor}">{{msg?.userName}}</span>: {{msg?.msg}}
   </div>
+
+</ion-content>
+<ion-footer>
   <div class="input-section"
        fxLayoutAlign="space-between stretch"
        fxLayout="row">
@@ -15,6 +29,5 @@
          (click)="sendMsg()">
       <ion-icon name="send-sharp"></ion-icon>
     </div>
-
   </div>
-</div>
+</ion-footer>

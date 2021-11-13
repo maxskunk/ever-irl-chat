@@ -1,26 +1,31 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Msg } from '../models/msg.model';
-import { BracerService } from '../services/bracer/bracer.service';
-import { TextToSpeechService } from '../services/tts/text-to-speech.service';
+import { Msg } from 'src/app/models/msg.model';
+import { BracerService } from 'src/app/services/bracer/bracer.service';
+import { TextToSpeechService } from 'src/app/services/tts/text-to-speech.service';
 
 @Component({
-  selector: 'app-tab1',
-  templateUrl: 'tab1.page.html',
-  styleUrls: ['tab1.page.scss']
+  selector: 'app-chat',
+  templateUrl: './chat.page.html',
+  styleUrls: ['./chat.page.scss'],
 })
-export class Tab1Page {
+export class ChatPage {
 
   public msgData: Msg[] = [];
-
+  public inputValue: string = "";
   public previewData: any;
 
   constructor(
     private tts: TextToSpeechService,
     private bracer: BracerService) {
+    // for (let x = 0; x < 100; x++) {
+    //   const newMsg: Msg = new Msg();
+    //   newMsg.msg = "MSG " + x;
+    //   this.msgData.push(newMsg);
+    // }
     this.bracer.bracerPayload.subscribe(msgs => {
+      //TODO Re-enable
       this.msgData = msgs;
-      console.log("NEW MESSAGES");
       const lastMsg = msgs[msgs.length - 1];
       if (lastMsg) {
         this.tts.speakInQueue(lastMsg.userName + " says " + lastMsg.msg);
@@ -30,10 +35,10 @@ export class Tab1Page {
 
 
     this.bracer.previewImage.subscribe((res) => {
-
       this.previewData = res;
-      //this.previewData = this.sanitizer.bypassSecurityTrustUrl(objectURL);
     });
+
+    this.bracer.startPreview();
   }
 
   public testMsg() {
@@ -55,6 +60,11 @@ export class Tab1Page {
         reader.readAsDataURL(image);
       }
     });
+  }
+  public sendMsg() {
+
+    this.bracer.sendMsg(this.inputValue);
+    this.inputValue = "";
   }
 
 }

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { observable, Observable, Subscriber } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subscriber, Subscription, interval } from 'rxjs';
 import { Msg } from 'src/app/models/msg.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
@@ -15,8 +14,10 @@ const MSG_CLIENT_MSG: string = "msg_client_msg";;
   providedIn: 'root'
 })
 export class BracerService {
+
   private msgSubscriber: Subscriber<Msg[]> = new Subscriber<Msg[]>();
   public bracerPayload: Observable<Msg[]> = new Observable<Msg[]>();
+  private subscription: Subscription;
 
   private previewSubscriber: Subscriber<SafeResourceUrl> = new Subscriber<SafeResourceUrl>();
   public previewImage: Observable<SafeResourceUrl> = new Observable<SafeResourceUrl>();
@@ -62,5 +63,11 @@ export class BracerService {
       console.log(msg);
     });
     this.msgSubscriber.next(msgs);
+  }
+
+  public startPreview() {
+    console.log("KICKING IT OFF");
+    const source = interval(5000);
+    this.subscription = source.subscribe(val => this.requestPreview());
   }
 }
