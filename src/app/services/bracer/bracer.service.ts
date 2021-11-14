@@ -17,39 +17,66 @@ export class BracerService {
 
   private msgSubscriber: Subscriber<Msg[]> = new Subscriber<Msg[]>();
   public bracerPayload: Observable<Msg[]> = new Observable<Msg[]>();
+
   private subscription: Subscription;
+
+
+  private connectionStatusSubscriber: Subscriber<boolean> = new Subscriber<boolean>();
+  public connectionStatus: Observable<boolean> = new Observable<boolean>();
 
   private previewSubscriber: Subscriber<SafeResourceUrl> = new Subscriber<SafeResourceUrl>();
   public previewImage: Observable<SafeResourceUrl> = new Observable<SafeResourceUrl>();
 
+  private _connected: boolean = false;
+
   public msgs: Msg[] = [];
   constructor(private socket: Socket, private _sanitizer: DomSanitizer) {
 
+
+    //Configure Subscribers
     this.bracerPayload = new Observable<Msg[]>((observer) => {
-      console.log("SEtTING SUB");
       this.msgSubscriber = observer;
     });
 
     this.previewImage = new Observable<Blob>((observer) => {
       this.previewSubscriber = observer;
-    })
+    });
+
+    this.connectionStatus = new Observable<boolean>((observer) => {
+      console.log("ARE WE HERE");
+      this.connectionStatusSubscriber = observer;
+      this.connectionStatusSubscriber.next(this._connected);
+    });
 
     socket.on(MSG_PAYLOAD, (res) => this.recievedMessages(res));
     socket.on(IMG_PAYLOAD, (res) => this.receivedPreview(res));
+    socket.on('connect_failed', (res) => {
+      console.log("Connection FailedE");
+    });
+    socket.on('disconnect', (text) => {
+      this._connected = false;
+      this.connectionStatusSubscriber.next(this._connected);
+
+
+      console.log("Disconnect Detected");
+    });
+    socket.on('connect', (text) => {
+      this._connected = true;
+      this.connectionStatusSubscriber.next(this._connected);
+    });
   }
 
   loadHistory() {
-    console.log("REQUESTING HISTORY FROM SERVER");
     this.socket.emit(MSG_REQUEST, null);
   }
   sendMsg(newMsg: string) {
-    console.log("SENDING MESSAGE TO SERVER");
     this.socket.emit(MSG_CLIENT_MSG, newMsg);
   }
 
   requestPreview() {
-    console.log("REQUESTING PREIVEW");
-    this.socket.emit(IMG_REQUEST);
+    if (this._connected) {
+      this.socket.emit(IMG_REQUEST);
+    }
   }
 
   public receivedPreview(res: any) {
@@ -58,7 +85,6 @@ export class BracerService {
 
   //Recieved Messages
   public recievedMessages(msgs: Msg[]) {
-    console.log("RECEIVING MESSAGES: " + msgs.length);
     msgs.forEach(msg => {
       console.log(msg);
     });
@@ -66,7 +92,6 @@ export class BracerService {
   }
 
   public startPreview() {
-    console.log("KICKING IT OFF");
     const source = interval(5000);
     this.subscription = source.subscribe(val => this.requestPreview());
   }

@@ -24,7 +24,6 @@
 <ion-content #content
              fxLayoutAlign="end stretch"
              fxLayout="column">
-
   <div *ngFor="let msg of msgData">
     <span [ngStyle]="{'color': msg.userColor}">{{msg?.userName}}</span>: {{msg?.msg}}
   </div>
@@ -34,8 +33,15 @@
   <div class="input-section"
        fxLayoutAlign="space-between stretch"
        fxLayout="row">
+
+    <div fxLayoutAlign="center center"
+         *ngIf="!currentlyConnected">
+      <mat-icon class="disconeted-icon">sensors_off</mat-icon>
+    </div>
+
     <ion-input autocorrect="on"
                [(ngModel)]="inputValue"
+               [disabled]="!currentlyConnected"
                (keyup.enter)="sendMsg()"></ion-input>
     <div class="sendBtn"
          fxLayoutAlign="center center"

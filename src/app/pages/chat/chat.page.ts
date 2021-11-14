@@ -17,6 +17,8 @@ export class ChatPage {
   public previewData: any;
   public ttsOn: boolean = true;
 
+  public currentlyConnected: boolean = false;
+
   @ViewChild('content') private content: IonContent;
 
   constructor(
@@ -43,6 +45,15 @@ export class ChatPage {
       this.previewData = res;
     });
 
+    //Subscribe to status changes
+    this.bracer.connectionStatus.subscribe((isConnected) => {
+      console.log("CONNECTION CHANGED: " + isConnected);
+      this.currentlyConnected = isConnected;
+      if (isConnected) {
+        this.bracer.loadHistory();
+      }
+    });
+
     this.bracer.startPreview();
   }
 
@@ -56,19 +67,6 @@ export class ChatPage {
 
   scrollToBottom(): void {
     this.content.scrollToBottom(300);
-  }
-
-  private createFileFromBlob(image: Blob): Observable<ArrayBuffer> {
-    return new Observable<any>((observer) => {
-      const reader = new FileReader();
-      reader.addEventListener('load', () => {
-        observer.next(reader.result);
-        observer.complete();
-      }, false);
-      if (image) {
-        reader.readAsDataURL(image);
-      }
-    });
   }
 
   public sendMsg() {
