@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Settings } from 'src/app/models/settings.model';
 import { BracerService } from 'src/app/services/bracer/bracer.service';
 
+
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.page.html',

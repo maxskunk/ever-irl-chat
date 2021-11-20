@@ -3,8 +3,8 @@ import { IonContent } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Msg } from 'src/app/models/msg.model';
 import { BracerService } from 'src/app/services/bracer/bracer.service';
+import { SettingsService } from 'src/app/services/settings.service';
 import { TextToSpeechService } from 'src/app/services/tts/text-to-speech.service';
-import { Storage } from '@capacitor/storage';
 
 @Component({
   selector: 'app-chat',
@@ -24,7 +24,8 @@ export class ChatPage implements OnInit {
 
   constructor(
     private tts: TextToSpeechService,
-    private bracer: BracerService) {
+    private bracer: BracerService,
+    private ss: SettingsService) {
 
 
   }
@@ -32,8 +33,8 @@ export class ChatPage implements OnInit {
   public async ngOnInit() {
 
     //Attempt to connect to any endpoint that's saved
-    this.bracer.connectToSavedEndpoint();
-
+    //this.bracer.connectToSavedEndpoint();
+    this.ss.loadAndEffectSettings();
     this.bracer.bracerPayload.subscribe(msgs => {
       //TODO Re-enable
       this.msgData = msgs;

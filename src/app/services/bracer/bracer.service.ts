@@ -37,7 +37,6 @@ export class BracerService {
   public msgs: Msg[] = [];
   constructor(private socket: Socket, private _sanitizer: DomSanitizer) {
 
-
     //Configure Subscribers
     this.bracerPayload = new Observable<Msg[]>((observer) => {
       this.msgSubscriber = observer;
@@ -106,7 +105,7 @@ export class BracerService {
   }
 
   public async getCurrentSavedEndpoint() {
-    return await Storage.get({ key: ENDPOINT_KEY });
+
   }
 
   public async setEndpointAndConnect(newEndPoint: string) {
