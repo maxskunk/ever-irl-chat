@@ -3,6 +3,12 @@
     <ion-title>
       🐜Chat
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button routerLink="/settings">
+        <ion-icon name="settings"></ion-icon>
+
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
   <img class="stream-preview"
        [src]="previewData">
@@ -29,7 +35,6 @@
   </div>
 </ion-content>
 <ion-footer>
-
   <div class="input-section"
        fxLayoutAlign="space-between stretch"
        fxLayout="row">

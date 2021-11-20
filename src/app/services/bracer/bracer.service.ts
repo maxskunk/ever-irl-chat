@@ -43,7 +43,6 @@ export class BracerService {
     });
 
     this.connectionStatus = new Observable<boolean>((observer) => {
-      console.log("ARE WE HERE");
       this.connectionStatusSubscriber = observer;
       this.connectionStatusSubscriber.next(this._connected);
     });

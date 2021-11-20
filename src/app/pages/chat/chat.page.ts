@@ -15,7 +15,7 @@ export class ChatPage {
   public msgData: Msg[] = [];
   public inputValue: string = "";
   public previewData: any;
-  public ttsOn: boolean = true;
+  public ttsOn: boolean = false;
 
   public currentlyConnected: boolean = false;
 
@@ -47,7 +47,6 @@ export class ChatPage {
 
     //Subscribe to status changes
     this.bracer.connectionStatus.subscribe((isConnected) => {
-      console.log("CONNECTION CHANGED: " + isConnected);
       this.currentlyConnected = isConnected;
       if (isConnected) {
         this.bracer.loadHistory();

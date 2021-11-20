@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref=""
+                       routerLink="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Settings</ion-title>
+    <!-- <ion-buttons slot="end">
+      <ion-button routerLink="/settings">
+        <ion-icon class="button-save"
+                  name="save"></ion-icon>
+      </ion-button>
+    </ion-buttons> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <form [formGroup]="settingsForm">
+    <ion-list lines="full"
+              class="ion-no-margin">
+      <!-- <ion-list-header lines="full">
+        <ion-label>
+          Label Positions
+        </ion-label>
+      </ion-list-header> -->
+      <ion-item>
+        <ion-label position="floating">Reciever URL:</ion-label>
+        <ion-input formControlName="receiverUrl"></ion-input>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+
+      <ion-button color="success"
+                  size="small"
+                  fill="solid">
+        <ion-icon name="save"></ion-icon>Apply
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
