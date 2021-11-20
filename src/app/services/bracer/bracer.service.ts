@@ -94,4 +94,10 @@ export class BracerService {
     const source = interval(5000);
     this.subscription = source.subscribe(val => this.requestPreview());
   }
+
+  public setEndpointAndConnect(newEndPoint: string) {
+    this.socket.disconnect();
+    this.socket.ioSocket.io.uri = newEndPoint;
+    this.socket.connect();
+  }
 }

@@ -29,6 +29,7 @@ export class ChatPage {
     //   newMsg.msg = "MSG " + x;
     //   this.msgData.push(newMsg);
     // }
+    this.bracer.setEndpointAndConnect("http://localhost:3000");
     this.bracer.bracerPayload.subscribe(msgs => {
       //TODO Re-enable
       this.msgData = msgs;
