@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { Msg } from 'src/app/models/msg.model';
 import { BracerService } from 'src/app/services/bracer/bracer.service';
 import { TextToSpeechService } from 'src/app/services/tts/text-to-speech.service';
+import { Storage } from '@capacitor/storage';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
 })
-export class ChatPage {
+export class ChatPage implements OnInit {
 
   public msgData: Msg[] = [];
   public inputValue: string = "";
@@ -24,12 +25,15 @@ export class ChatPage {
   constructor(
     private tts: TextToSpeechService,
     private bracer: BracerService) {
-    // for (let x = 0; x < 100; x++) {
-    //   const newMsg: Msg = new Msg();
-    //   newMsg.msg = "MSG " + x;
-    //   this.msgData.push(newMsg);
-    // }
-    this.bracer.setEndpointAndConnect("http://localhost:3000");
+
+
+  }
+
+  public async ngOnInit() {
+
+    //Attempt to connect to any endpoint that's saved
+    this.bracer.connectToSavedEndpoint();
+
     this.bracer.bracerPayload.subscribe(msgs => {
       //TODO Re-enable
       this.msgData = msgs;
@@ -39,7 +43,7 @@ export class ChatPage {
       }
       this.scrollToBottom();
     });
-    this.testMsg()
+    this.bracer.loadHistory();
 
 
     this.bracer.previewImage.subscribe((res) => {
@@ -55,10 +59,6 @@ export class ChatPage {
     });
 
     this.bracer.startPreview();
-  }
-
-  public testMsg() {
-    this.bracer.loadHistory();
   }
 
   public requestPreview() {

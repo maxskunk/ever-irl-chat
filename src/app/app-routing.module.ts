@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { SettingsResolver } from './pages/settings/settings.resolver';
 
 const routes: Routes = [
   // {
@@ -9,9 +10,11 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./pages/chat/chat.module').then(m => m.ChatPageModule)
-  },  {
+  },
+  {
     path: 'settings',
-    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
+    resolve: { data: SettingsResolver },
+    loadChildren: () => import('./pages/settings/settings.module').then(m => m.SettingsPageModule)
   }
 
 

@@ -3,12 +3,17 @@ import { Socket } from 'ngx-socket-io';
 import { Observable, Subscriber, Subscription, interval } from 'rxjs';
 import { Msg } from 'src/app/models/msg.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Storage } from '@capacitor/storage';
 
 const MSG_REQUEST: string = "msg_request";
 const MSG_PAYLOAD: string = "msg_payload";
 const IMG_PAYLOAD: string = "img_payload";
 const IMG_REQUEST: string = "img_request";
 const MSG_CLIENT_MSG: string = "msg_client_msg";;
+
+//Storage
+export const ENDPOINT_KEY: string = "storage_endpoint_key";
+
 
 @Injectable({
   providedIn: 'root'
@@ -84,9 +89,6 @@ export class BracerService {
 
   //Recieved Messages
   public recievedMessages(msgs: Msg[]) {
-    msgs.forEach(msg => {
-      console.log(msg);
-    });
     this.msgSubscriber.next(msgs);
   }
 
@@ -95,7 +97,20 @@ export class BracerService {
     this.subscription = source.subscribe(val => this.requestPreview());
   }
 
-  public setEndpointAndConnect(newEndPoint: string) {
+  public async connectToSavedEndpoint() {
+    const endpoint = await Storage.get({ key: ENDPOINT_KEY });
+    if (endpoint && endpoint.value) {
+      console.log("CONNECTING TO ENDPOINT: " + endpoint.value);
+      this.setEndpointAndConnect(endpoint.value);
+    }
+  }
+
+  public async getCurrentSavedEndpoint() {
+    return await Storage.get({ key: ENDPOINT_KEY });
+  }
+
+  public async setEndpointAndConnect(newEndPoint: string) {
+    await Storage.set({ key: ENDPOINT_KEY, value: newEndPoint });
     this.socket.disconnect();
     this.socket.ioSocket.io.uri = newEndPoint;
     this.socket.connect();
