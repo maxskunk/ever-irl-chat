@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { FormGroup, FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Settings } from 'src/app/models/settings.model';
 import { BracerService } from 'src/app/services/bracer/bracer.service';
+import { SettingsService } from 'src/app/services/settings.service';
 
 
 @Component({
@@ -13,13 +14,17 @@ import { BracerService } from 'src/app/services/bracer/bracer.service';
 })
 export class SettingsPage implements OnInit {
 
+  private defaultSettings: Settings;
   public settingsForm = new FormGroup({
-    receiverUrl: new FormControl(''),
+    endpointUrl: new FormControl('', Validators.required),
+    keepAwake: new FormControl(''),
   });
 
   constructor(private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
-    private bracer: BracerService) { }
+    private bracer: BracerService,
+    private settingsService: SettingsService,
+    private router: Router) { }
 
   ngOnInit() {
 
@@ -28,14 +33,19 @@ export class SettingsPage implements OnInit {
   ionViewWillEnter() {
     console.log("LOADING FROM SAVE");
     const data: Settings = this.activatedRoute.snapshot.data.data;
-    this.settingsForm.patchValue({ receiverUrl: data.endpointUrl });
+    this.settingsForm.patchValue(data);
+    //this.settingsForm.patchValue({ receiverUrl: data.endpointUrl });
   }
 
-  public applySettings() {
+  public async applySettings() {
     //TODO CHECK IF VALID
-    const newEndpoint = this.settingsForm.controls['receiverUrl'].value;
-    console.log("SETTING ENDPOOINT TO: " + newEndpoint);
-    this.bracer.setEndpointAndConnect(newEndpoint);
+    const newSettings: Settings = this.settingsForm.value as Settings;
+    //console.log("SETTING ENDPOOINT TO: " + newSettings.endpointUrl);
+    //this.bracer.setEndpointAndConnect(newSettings.endpointUrl);
+    //await this.settingsService.setKeepAwakePref(newSettings.keepAwake);
+    await this.settingsService.setSettings(newSettings);
+    this.router.navigate(['/'])
+
   }
 
 }

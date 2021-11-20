@@ -3,5 +3,5 @@ export class Settings {
         this.endpointUrl = newEndpoint;
     }
     public endpointUrl: string;
-    public allowSleep: boolean = true;
+    public keepAwake: boolean = true;
 }

@@ -25,7 +25,12 @@
       </ion-list-header> -->
       <ion-item>
         <ion-label position="floating">Reciever URL:</ion-label>
-        <ion-input formControlName="receiverUrl"></ion-input>
+        <ion-input formControlName="endpointUrl"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Keep Awake:</ion-label>
+        <ion-toggle formControlName="keepAwake"
+                    color="primary"></ion-toggle>
       </ion-item>
     </ion-list>
   </form>
@@ -33,13 +38,13 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-buttons slot="end">
+    <ion-buttons fxLayoutAlign="center center">
 
       <ion-button color="success"
                   (click)="applySettings()"
                   size="small"
                   fill="solid">
-        <ion-icon name="save"></ion-icon>Apply
+        <ion-icon name="save"></ion-icon>Apply and Save
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

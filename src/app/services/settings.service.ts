@@ -26,28 +26,39 @@ export class SettingsService {
     console.log("LOADING AND EFFECTING SETTINGS");
 
     //Load Settings values
-    const endPointobj = await Storage.get({ key: ENDPOINT_KEY });
-    this._currentSettings.endpointUrl = endPointobj.value;
-
-    const stayAwakeobj = await Storage.get({ key: STAYAWAKE_KEY });
-    this._currentSettings.allowSleep = Boolean(stayAwakeobj.value);
+    this._currentSettings = await this.getSettings();
 
     if (this._currentSettings.endpointUrl) {
       //Attempt to connect to any endpoint that's saved
       this.bracerService.setEndpointAndConnect(this._currentSettings.endpointUrl);
     }
-
-    this.setKeepAwakePref(this._currentSettings.allowSleep);
+    this._currentSettings = await this.getSettings();
+    this.setKeepAwakePref(this._currentSettings.keepAwake);
 
   }
 
-  private async setKeepAwakePref(isAwake: boolean) {
+  public async getSettings(): Promise<Settings> {
+    const endPointobj = await Storage.get({ key: ENDPOINT_KEY });
+    const returnSetttings = new Settings(endPointobj.value);
+
+    const stayAwakeobj = await Storage.get({ key: STAYAWAKE_KEY });
+    returnSetttings.keepAwake = stayAwakeobj.value === 'true';
+
+    return returnSetttings
+  }
+
+  public async setSettings(newSettings: Settings) {
+    await Storage.set({ key: ENDPOINT_KEY, value: newSettings.endpointUrl });
+    await Storage.set({ key: STAYAWAKE_KEY, value: String(newSettings.keepAwake) });
+    this._currentSettings = newSettings;
+    return this._currentSettings;
+  }
+
+  public async setKeepAwakePref(isAwake: boolean) {
     if (isAwake) {
-      console.log("Setting phone to Keep Awake")
       return await KeepAwake.keepAwake();
     }
     else {
-      console.log("Setting phone to allow sleep")
       return await KeepAwake.allowSleep();
     }
   }
