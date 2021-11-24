@@ -3,6 +3,7 @@ import { IonContent } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { Msg } from 'src/app/models/msg.model';
 import { BracerService } from 'src/app/services/bracer/bracer.service';
+import { SettingsService } from 'src/app/services/settings.service';
 import { TextToSpeechService } from 'src/app/services/tts/text-to-speech.service';
 
 @Component({
@@ -10,12 +11,12 @@ import { TextToSpeechService } from 'src/app/services/tts/text-to-speech.service
   templateUrl: './chat.page.html',
   styleUrls: ['./chat.page.scss'],
 })
-export class ChatPage {
+export class ChatPage implements OnInit {
 
   public msgData: Msg[] = [];
   public inputValue: string = "";
   public previewData: any;
-  public ttsOn: boolean = true;
+  public ttsOn: boolean = false;
 
   public currentlyConnected: boolean = false;
 
@@ -23,12 +24,20 @@ export class ChatPage {
 
   constructor(
     private tts: TextToSpeechService,
-    private bracer: BracerService) {
-    // for (let x = 0; x < 100; x++) {
-    //   const newMsg: Msg = new Msg();
-    //   newMsg.msg = "MSG " + x;
-    //   this.msgData.push(newMsg);
-    // }
+    private bracer: BracerService,
+    private ss: SettingsService) {
+
+
+  }
+
+  ionViewWillEnter() {
+    //Attempt to connect to any endpoint that's saved
+    this.ss.loadAndEffectSettings();
+  }
+
+  public async ngOnInit() {
+
+
     this.bracer.bracerPayload.subscribe(msgs => {
       //TODO Re-enable
       this.msgData = msgs;
@@ -38,7 +47,7 @@ export class ChatPage {
       }
       this.scrollToBottom();
     });
-    this.testMsg()
+    this.bracer.loadHistory();
 
 
     this.bracer.previewImage.subscribe((res) => {
@@ -47,7 +56,6 @@ export class ChatPage {
 
     //Subscribe to status changes
     this.bracer.connectionStatus.subscribe((isConnected) => {
-      console.log("CONNECTION CHANGED: " + isConnected);
       this.currentlyConnected = isConnected;
       if (isConnected) {
         this.bracer.loadHistory();
@@ -55,10 +63,6 @@ export class ChatPage {
     });
 
     this.bracer.startPreview();
-  }
-
-  public testMsg() {
-    this.bracer.loadHistory();
   }
 
   public requestPreview() {

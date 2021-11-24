@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicModule } from '@ionic/angular';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatIconModule } from '@angular/material/icon';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -16,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
         FlexLayoutModule,
         IonicModule,
         CommonModule,
+        ReactiveFormsModule,
         FormsModule,
     ],
     exports: [
@@ -23,7 +25,9 @@ import { MatIconModule } from '@angular/material/icon';
         IonicModule,
         CommonModule,
         FormsModule,
-        MatIconModule
+        ReactiveFormsModule,
+        MatIconModule,
+
     ]
 
 })
