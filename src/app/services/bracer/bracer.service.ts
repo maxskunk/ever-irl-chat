@@ -54,7 +54,7 @@ export class BracerService {
     socket.on(MSG_PAYLOAD, (res) => this.recievedMessages(res));
     socket.on(IMG_PAYLOAD, (res) => this.receivedPreview(res));
     socket.on('connect_failed', (res) => {
-      console.log("Connection FailedE");
+      console.log("Connection Failed");
     });
     socket.on('disconnect', (text) => {
       this._connected = false;
@@ -64,6 +64,7 @@ export class BracerService {
       console.log("Disconnect Detected");
     });
     socket.on('connect', (text) => {
+      console.log("SUCCESSFULLY CONNECTED");
       this._connected = true;
       this.connectionStatusSubscriber.next(this._connected);
     });

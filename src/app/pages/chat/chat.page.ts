@@ -30,11 +30,14 @@ export class ChatPage implements OnInit {
 
   }
 
+  ionViewWillEnter() {
+    //Attempt to connect to any endpoint that's saved
+    this.ss.loadAndEffectSettings();
+  }
+
   public async ngOnInit() {
 
-    //Attempt to connect to any endpoint that's saved
-    //this.bracer.connectToSavedEndpoint();
-    this.ss.loadAndEffectSettings();
+
     this.bracer.bracerPayload.subscribe(msgs => {
       //TODO Re-enable
       this.msgData = msgs;
