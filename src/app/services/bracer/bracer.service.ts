@@ -51,7 +51,7 @@ export class BracerService {
       this.connectionStatusSubscriber.next(this._connected);
     });
 
-    socket.on(MSG_PAYLOAD, (res) => this.recievedMessages(res));
+    socket.on(MSG_PAYLOAD, (res) => this.recievedChatHistory(res));
     socket.on(IMG_PAYLOAD, (res) => this.receivedPreview(res));
     socket.on('connect_failed', (res) => {
       console.log("Connection Failed");
@@ -64,13 +64,12 @@ export class BracerService {
       console.log("Disconnect Detected");
     });
     socket.on('connect', (text) => {
-      console.log("SUCCESSFULLY CONNECTED");
       this._connected = true;
       this.connectionStatusSubscriber.next(this._connected);
     });
   }
 
-  loadHistory() {
+  requestChatHistory() {
     this.socket.emit(MSG_REQUEST, null);
   }
   sendMsg(newMsg: string) {
@@ -88,7 +87,7 @@ export class BracerService {
   }
 
   //Recieved Messages
-  public recievedMessages(msgs: Msg[]) {
+  public recievedChatHistory(msgs: Msg[]) {
     this.msgSubscriber.next(msgs);
   }
 

@@ -7,6 +7,8 @@ import { KeepAwake } from '@capacitor-community/keep-awake';
 
 export const ENDPOINT_KEY: string = "storage_endpoint_key";
 export const STAYAWAKE_KEY: string = "storage_stayawake_key";
+export const LAST_READ_ID_KEY: string = "storage_last_read_key";
+export const TTS_ON_KEY: string = "tts_on_key";
 
 
 @Injectable({
@@ -61,5 +63,21 @@ export class SettingsService {
     else {
       return await KeepAwake.allowSleep();
     }
+  }
+
+  public async setLastMessageId(id: string) {
+    return await Storage.set({ key: LAST_READ_ID_KEY, value: id });
+  }
+  public async getLastMessageId() {
+    const readValue = await Storage.get({ key: LAST_READ_ID_KEY });
+    return readValue.value;
+  }
+
+  public async setTTSOnPref(isTTS: boolean) {
+    return await Storage.set({ key: TTS_ON_KEY, value: String(isTTS) });
+  }
+  public async getTTSOnPref(): Promise<boolean> {
+    const readValue = await Storage.get({ key: TTS_ON_KEY });
+    return readValue.value === 'true';
   }
 }

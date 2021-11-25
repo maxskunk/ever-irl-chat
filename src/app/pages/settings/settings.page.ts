@@ -22,7 +22,6 @@ export class SettingsPage implements OnInit {
 
   constructor(private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
-    private bracer: BracerService,
     private settingsService: SettingsService,
     private router: Router) { }
 
