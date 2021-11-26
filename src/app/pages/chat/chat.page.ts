@@ -26,7 +26,7 @@ export class ChatPage implements OnInit {
   constructor(
     private tts: TextToSpeechService,
     private bracer: BracerService,
-    private ss: SettingsService,) {
+    private ss: SettingsService) {
 
 
   }
