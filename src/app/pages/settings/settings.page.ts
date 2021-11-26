@@ -22,7 +22,6 @@ export class SettingsPage implements OnInit {
 
   constructor(private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
-    private bracer: BracerService,
     private settingsService: SettingsService,
     private router: Router) { }
 
@@ -41,7 +40,7 @@ export class SettingsPage implements OnInit {
     //TODO CHECK IF VALID
     const newSettings: Settings = this.settingsForm.value as Settings;
     //console.log("SETTING ENDPOOINT TO: " + newSettings.endpointUrl);
-    this.bracer.setEndpointAndConnect(newSettings.endpointUrl);
+    //this.bracer.setEndpointAndConnect(newSettings.endpointUrl);
     //await this.settingsService.setKeepAwakePref(newSettings.keepAwake);
     await this.settingsService.setSettings(newSettings);
     this.router.navigate(['/'])
