@@ -90,7 +90,7 @@ export class ChatPage implements OnInit {
 
 
   private handleChatHistory(msgs: Msg[]) {
-    if (msgs[msgs.length - 1].id === this._lastReadMsgId) {
+    if (msgs.length > 0 && msgs[msgs.length - 1].id === this._lastReadMsgId) {
       this.msgData = msgs;
       this.scrollToBottom();
       //No new Messages Received
