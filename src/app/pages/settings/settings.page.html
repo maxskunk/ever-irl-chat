@@ -15,7 +15,8 @@
 </ion-header>
 
 <ion-content fullscreen>
-  <form [formGroup]="settingsForm">
+  <form [formGroup]="settingsForm"
+        (ngSubmit)="applySettings()">
     <ion-list lines="full"
               class="ion-no-margin">
       <!-- <ion-list-header lines="full">
@@ -26,6 +27,10 @@
       <ion-item>
         <ion-label position="floating">Reciever URL:</ion-label>
         <ion-input formControlName="endpointUrl"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Server Password:</ion-label>
+        <ion-input formControlName="serverPass"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label>Keep Awake:</ion-label>

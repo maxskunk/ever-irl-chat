@@ -4,6 +4,7 @@ import { Observable, Subscriber, Subscription, interval } from 'rxjs';
 import { Msg } from 'src/app/models/msg.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Storage } from '@capacitor/storage';
+import { SERVER_PASS_KEY } from '../settings.service';
 
 const MSG_REQUEST: string = "msg_request";
 const MSG_PAYLOAD: string = "msg_payload";
@@ -70,11 +71,11 @@ export class BracerService {
     // socket.on("reconnect", (attempt) => {
     //   console.log("RECONNECTION ATTEMPT");
     // });
-    socket.on('connect', (text) => {
+    socket.on('connect', async (text) => {
       console.log("ON CONNECTION");
 
       //Utilize authentication
-      socket.emit('authentication', { username: "", password: "secret" });
+      socket.emit('authentication', { username: "", password: "jasper" });
       this._connected = true;
       this.connectionStatusSubscriber.next(this._connected);
     });
@@ -113,17 +114,15 @@ export class BracerService {
 
   public async connectToSavedEndpoint() {
     const endpoint = await Storage.get({ key: ENDPOINT_KEY });
-    if (endpoint && endpoint.value) {
+    const password = await Storage.get({ key: SERVER_PASS_KEY });
+    //TODO Send Toast Message when No password
+    if (endpoint && endpoint.value && password && password.value) {
       console.log("CONNECTING TO ENDPOINT: " + endpoint.value);
-      this.setEndpointAndConnect(endpoint.value);
+      this.setEndpointAndConnect(endpoint.value, password.value);
     }
   }
 
-  public async getCurrentSavedEndpoint() {
-
-  }
-
-  public async setEndpointAndConnect(newEndPoint: string) {
+  public async setEndpointAndConnect(newEndPoint: string, serverPass: string) {
     await Storage.set({ key: ENDPOINT_KEY, value: newEndPoint });
     this.socket.disconnect();
     this.socket.ioSocket.io.uri = newEndPoint;

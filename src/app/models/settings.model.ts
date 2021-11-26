@@ -3,5 +3,6 @@ export class Settings {
         this.endpointUrl = newEndpoint;
     }
     public endpointUrl: string;
+    public serverPass: string;
     public keepAwake: boolean = true;
 }
