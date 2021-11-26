@@ -32,6 +32,7 @@ export class ChatPage implements OnInit {
   }
 
   ionViewWillEnter() {
+    console.log("CONNECTING");
     //Attempt to connect to any endpoint that's saved
     this.ss.loadAndEffectSettings();
   }

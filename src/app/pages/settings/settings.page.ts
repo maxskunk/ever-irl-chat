@@ -24,7 +24,8 @@ export class SettingsPage implements OnInit {
   constructor(private fb: FormBuilder,
     private activatedRoute: ActivatedRoute,
     private settingsService: SettingsService,
-    private router: Router) { }
+    private router: Router,
+    private bracer: BracerService) { }
 
   ngOnInit() {
 
@@ -42,9 +43,9 @@ export class SettingsPage implements OnInit {
     if (!this.settingsForm.invalid) {
       const newSettings: Settings = this.settingsForm.value as Settings;
       //console.log("SETTING ENDPOOINT TO: " + newSettings.endpointUrl);
-      //this.bracer.setEndpointAndConnect(newSettings.endpointUrl);
       //await this.settingsService.setKeepAwakePref(newSettings.keepAwake);
       await this.settingsService.setSettings(newSettings);
+      // this.bracer.setEndpointAndConnect(newSettings.endpointUrl);
       this.router.navigate(['/'])
     }
   }
