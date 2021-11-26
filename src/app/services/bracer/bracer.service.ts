@@ -5,6 +5,7 @@ import { Msg } from 'src/app/models/msg.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Storage } from '@capacitor/storage';
 import { SERVER_PASS_KEY } from '../settings.service';
+import { Toast } from '@capacitor/toast';
 
 const MSG_REQUEST: string = "msg_request";
 const MSG_PAYLOAD: string = "msg_payload";
@@ -33,6 +34,7 @@ export class BracerService {
   private previewSubscriber: Subscriber<SafeResourceUrl> = new Subscriber<SafeResourceUrl>();
   public previewImage: Observable<SafeResourceUrl> = new Observable<SafeResourceUrl>();
 
+  private _serverPass: string;
   private _connected: boolean = false;
 
   public msgs: Msg[] = [];
@@ -56,9 +58,11 @@ export class BracerService {
     socket.on(IMG_PAYLOAD, (res) => this.receivedPreview(res));
     socket.on('connect_failed', (res) => {
       console.log("Connection Failed");
+      Toast.show({ text: "Connection Failed" });
     });
 
     socket.on('unauthorized', (err) => {
+      Toast.show({ text: "There was an error with the authentication:" + err.message });
       console.log("There was an error with the authentication:", err.message);
     });
     socket.on('disconnect', (text) => {
@@ -72,10 +76,10 @@ export class BracerService {
     //   console.log("RECONNECTION ATTEMPT");
     // });
     socket.on('connect', async (text) => {
-      console.log("ON CONNECTION");
-
+      Toast.show({ text: 'Connecting to Server' });
       //Utilize authentication
-      socket.emit('authentication', { username: "", password: "jasper" });
+      socket.emit('authentication', { username: "", password: this._serverPass });
+      Toast.show({ text: 'Connected to Server' });
       this._connected = true;
       this.connectionStatusSubscriber.next(this._connected);
     });
@@ -123,6 +127,7 @@ export class BracerService {
   }
 
   public async setEndpointAndConnect(newEndPoint: string, serverPass: string) {
+    this._serverPass = serverPass;
     await Storage.set({ key: ENDPOINT_KEY, value: newEndPoint });
     this.socket.disconnect();
     this.socket.ioSocket.io.uri = newEndPoint;
