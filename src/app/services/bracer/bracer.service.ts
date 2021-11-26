@@ -56,6 +56,10 @@ export class BracerService {
     socket.on('connect_failed', (res) => {
       console.log("Connection Failed");
     });
+
+    socket.on('unauthorized', (err) => {
+      console.log("There was an error with the authentication:", err.message);
+    });
     socket.on('disconnect', (text) => {
       this._connected = false;
       this.connectionStatusSubscriber.next(this._connected);
@@ -63,10 +67,21 @@ export class BracerService {
 
       console.log("Disconnect Detected");
     });
+    // socket.on("reconnect", (attempt) => {
+    //   console.log("RECONNECTION ATTEMPT");
+    // });
     socket.on('connect', (text) => {
+      console.log("ON CONNECTION");
+
+      //Utilize authentication
+      socket.emit('authentication', { username: "", password: "secret" });
       this._connected = true;
       this.connectionStatusSubscriber.next(this._connected);
     });
+
+
+
+
   }
 
   requestChatHistory() {
