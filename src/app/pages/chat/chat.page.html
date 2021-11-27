@@ -1,21 +1,22 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Ever IRL Chat <small>v0.0.1</small>
-    </ion-title>
-    <ion-buttons slot="end">
-      <ion-button routerLink="/settings">
-        <ion-icon name="settings"></ion-icon>
+<!-- <ion-header [translucent]="true">
 
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
   <img class="stream-preview"
        [src]="previewData">
   <div class="chat-button-cont"
        fxLayout="row"
        fxLayoutAlign="end end"
        fxWidth="100%">
+
+  </div>
+</ion-header> -->
+<img class="stream-preview"
+     [src]="previewData">
+<ion-toolbar>
+  <ion-title>
+    Ever IRL Chat <small>v1.0.3</small>
+  </ion-title>
+
+  <ion-buttons slot="end">
     <ion-button (click)="toggleSpeek()">
       <ion-icon name="volume-medium"
                 *ngIf="ttsOn"></ion-icon>
@@ -23,9 +24,12 @@
       <ion-icon name="volume-mute"
                 *ngIf="!ttsOn"></ion-icon>
     </ion-button>
-  </div>
-</ion-header>
+    <ion-button routerLink="/settings">
+      <ion-icon name="settings"></ion-icon>
 
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
 
 <ion-content #content
              fxLayoutAlign="end stretch"
