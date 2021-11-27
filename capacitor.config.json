@@ -1,6 +1,6 @@
 {
-  "appId": "com.zokya.irl_bracer",
-  "appName": "irl-bracer",
+  "appId": "com.zokyamedia.everirl",
+  "appName": "everirl",
   "webDir": "www",
   "bundledWebRuntime": false
 }
